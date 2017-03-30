@@ -90,6 +90,20 @@ void timeCopy(struct timespec *dest, struct timespec *source) {
 
 int done=0;
 int xres=800, yres=600;
+int state_menu=0;
+
+class Input{
+    public:
+        int loc[2];
+        int size;
+        char text[100];
+        Input() {
+            loc[0];
+            loc[1];
+            text[0] = '\0';
+            size = 32;
+        }
+}input;
 
 typedef struct t_bigfoot {
 	Vec pos;
@@ -958,6 +972,38 @@ void render(void)
 	//
 	if (showUmbrella)
 		drawUmbrella();
+
+    if (state_menu==1) {
+        glColor3f(1.0, 0.0, 0.0);
+        int cx = xres/2;
+        int cy = yres/2;
+
+        glBegin(GL_QUADS);
+            glVerter2i(cx - 100, cy+100);
+            glVerter2i(cx+100, cy+100);
+            glVerter2i(cx+100, cy-100);
+            glVerter2i(cx-100, cy-100);
+        glEnd();
+       // glVertex(cx-100, cy-199);
+       // glEnd();
+        glEnable(GL_TEXTUERE_2D);
+        r.bot = cy+20;
+        r.left =cx;
+        r.center = 1;
+	    ggprint8b(&r, 16, 0x00ffff00, "THis is my menu");
+        
+	ggprint8b(&r, 16, 0,  "This is my second line");
+    glColor3f(1.0, 1.0, 0.0);
+    cx= input.loc[0]-100;
+    cy = input.loc[1]-40;
+    glBegin(GL_QUADS);
+        glVerter2i(cx, cy);
+        glVerter2i(cx, cy + 16):
+        glVerter2i(cx + input.size, cy+16);
+        glVerter2i(cx+input.size, cy);
+        glEnd();
+}
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 	//
 	//
